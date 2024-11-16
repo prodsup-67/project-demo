@@ -357,7 +357,8 @@
         "wires": [
             [
                 "90ea110c514838e4",
-                "23a030ece1edb17e"
+                "23a030ece1edb17e",
+                "338829e7d01611c4"
             ],
             []
         ]
@@ -366,6 +367,7 @@
         "id": "4b6f65dd04ac59f0",
         "type": "http request",
         "z": "dedfba256312356e",
+        "d": true,
         "name": "",
         "method": "POST",
         "ret": "txt",
@@ -374,10 +376,12 @@
         "tls": "",
         "persist": false,
         "proxy": "",
+        "insecureHTTPParser": false,
         "authType": "",
         "senderr": false,
-        "x": 890,
-        "y": 140,
+        "headers": [],
+        "x": 930,
+        "y": 100,
         "wires": [
             [
                 "0dc3e17b2962ebe4"
@@ -396,23 +400,25 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1090,
-        "y": 140,
+        "x": 1150,
+        "y": 100,
         "wires": []
     },
     {
         "id": "90ea110c514838e4",
         "type": "function",
         "z": "dedfba256312356e",
-        "name": "",
+        "d": true,
+        "name": "Line Notify",
         "func": "console.log(msg)\nconst date = new Date()\nconst datestring = date.toLocaleDateString()\nconst timestring = date.toLocaleTimeString()\n    \n    \nmsg.payload = {\n    message: `${datestring} ${timestring}\\nValue: ${msg.payload.toFixed(2)}`    \n}\n\nconst auth = `Bearer ${env.get(\"LINE_NOTIFY_TOKEN\")}`\nmsg.headers = {\n    \"Content-Type\":\"application/x-www-form-urlencoded\",\n    \"Authorization\": auth}\n\nconsole.log(msg)\nreturn msg;",
         "outputs": 1,
+        "timeout": "",
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 700,
-        "y": 140,
+        "x": 730,
+        "y": 100,
         "wires": [
             [
                 "4b6f65dd04ac59f0"
@@ -783,6 +789,79 @@
         "wires": []
     },
     {
+        "id": "2f961c98bb78d8ff",
+        "type": "http request",
+        "z": "dedfba256312356e",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.telegram.org/bot7259382710:AAFF-MNyFO1XSGrDolREQNnXAhXIwS0v2lo/sendMessage",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 950,
+        "y": 160,
+        "wires": [
+            [
+                "0dc3e17b2962ebe4"
+            ]
+        ]
+    },
+    {
+        "id": "338829e7d01611c4",
+        "type": "function",
+        "z": "dedfba256312356e",
+        "name": "Telegram Notify",
+        "func": "console.log(msg)\nconst date = new Date()\nconst datestring = date.toLocaleDateString()\nconst timestring = date.toLocaleTimeString()\n\n\nmsg.payload = {\n    \"chat_id\": env.get(\"TELEGRAM_CHAT_ID\"),\n    \"text\": `${datestring} ${timestring}\\nValue: ${msg.payload.toFixed(2)}`\n}\n\nmsg.headers = {\n    \"Content-Type\": \"application/json\",\n}\n\nconsole.log(msg)\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 160,
+        "wires": [
+            [
+                "2f961c98bb78d8ff"
+            ]
+        ]
+    },
+    {
+        "id": "bb0de63bd7f56c20",
+        "type": "inject",
+        "z": "dedfba256312356e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "12",
+        "payloadType": "num",
+        "x": 550,
+        "y": 180,
+        "wires": [
+            [
+                "338829e7d01611c4"
+            ]
+        ]
+    },
+    {
         "id": "2e2c5b29411b1191",
         "type": "inject",
         "z": "9cab3d86bb384ee4",
@@ -826,6 +905,64 @@
         "x": 720,
         "y": 220,
         "wires": []
+    },
+    {
+        "id": "2b46d5f29754c773",
+        "type": "inject",
+        "z": "9cab3d86bb384ee4",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "TELEGRAM_BOT_API_KEY",
+        "payloadType": "env",
+        "x": 450,
+        "y": 300,
+        "wires": [
+            [
+                "ddbd2ad8e14cc9a6"
+            ]
+        ]
+    },
+    {
+        "id": "01df73495ee6c42d",
+        "type": "inject",
+        "z": "9cab3d86bb384ee4",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "${TELEGRAM_BOT_API_KEY}",
+        "payloadType": "str",
+        "x": 490,
+        "y": 400,
+        "wires": [
+            [
+                "ddbd2ad8e14cc9a6"
+            ]
+        ]
     },
     {
         "id": "cd5770bc81803a34",

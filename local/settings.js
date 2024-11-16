@@ -20,6 +20,10 @@
  *
  **/
 
+// Nirand: Add env variables
+require("dotenv").config();
+// console.log({ fb: process.env.FIREBASE_SERVICE_ACCOUNT });
+
 module.exports = {
   /*******************************************************************************
    * Flow File and User Directory Settings

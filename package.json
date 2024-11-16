@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "node-red": "^4.0.5",
     "node-red-contrib-cloud-firestore": "^3.2.0",
     "node-red-dashboard": "^3.6.5"
